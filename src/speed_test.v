@@ -179,7 +179,7 @@ ring_with_counter #(.WIDTH(COUNTER_WIDTH)) ring0(
     .count(count0[COUNTER_WIDTH-1:0])
 );
 
-assign value0[WIDTH-1:0] = {{WIDTH-COUNTER_WIDTH{1'b1}},count0[COUNTER_WIDTH-1:0]};
+assign value0[WIDTH-1:0] = {{WIDTH-COUNTER_WIDTH{count0[COUNTER_WIDTH-1]}},count0[COUNTER_WIDTH-1:0]};
 
 ring_with_counter #(.WIDTH(COUNTER_WIDTH)) ring1(
     .nrst(nrst),
