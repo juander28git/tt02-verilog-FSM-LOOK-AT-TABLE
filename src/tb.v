@@ -13,7 +13,9 @@ parameter run_smoke_test = 1;
 parameter run_measurement = 0;
 parameter run_show_status = 0;
 
-reg pass;
+reg rpass;
+
+assign pass = rpass;
 
 reg nrst,trig;
 reg [1:0] ring_en;
@@ -39,7 +41,7 @@ end
 //end
 
 initial begin
-   pass = 0;
+   rpass = 0;
 
    //$sdf_annotate("speed_test.sdf",speed_test, , , "maximum");
 
@@ -187,7 +189,7 @@ initial begin
    end
 
    $display("TEST PASS");
-   pass = 1;
+   rpass = 1;
 
 end
 
