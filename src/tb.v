@@ -3,7 +3,7 @@
 module tb (
     // testbench is controlled by test.py
     input clk,
-    output [7:0] out
+    output pass 
    );
 
 
