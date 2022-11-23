@@ -1,9 +1,9 @@
 `timescale 1ns/10ps
 
-//`define SIM
+//`define COCOTB_SIM
 
 module rdffe(input clk,d,en,rst, output q);
-  `ifdef SIM
+  `ifdef COCOTB_SIM
     reg rq;
     assign #0.1 q = rq;
     always @(posedge clk or posedge rst)
@@ -21,7 +21,7 @@ module rdffe(input clk,d,en,rst, output q);
 endmodule
 
 module sdffe(input clk,d,en,pre, output q);
-  `ifdef SIM
+  `ifdef COCOTB_SIM 
     reg rq;
     assign #0.1 q = rq;
     always @(posedge clk or posedge pre)
@@ -39,7 +39,7 @@ module sdffe(input clk,d,en,pre, output q);
 endmodule
 
 module inv_with_delay(input A,output Y);
-  `ifdef SIM
+  `ifdef COCOTB_SIM
   assign #0.02 Y = ~A; // pick a fairly quick delay from the tt_025C_1v80 liberty file
                        // the actualy delay per stage is going to be slower
   `else
@@ -48,7 +48,7 @@ module inv_with_delay(input A,output Y);
 endmodule
 
 module nand2_with_delay(input A,input B,output Y);
-  `ifdef SIM
+  `ifdef COCOTB_SIM
   assign #0.05 Y = ~(A & B);
   `else
   sky130_fd_sc_hd__nand2_2 nand2(.A(A),.B(B),.Y(Y));
