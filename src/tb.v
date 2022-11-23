@@ -50,7 +50,7 @@ initial begin
      $dumpvars(0);
    end
 
-   if( 1'b0 == (run_smoke_testrun_measurement|run_show_status)) begin
+   if( 1'b0 == (run_smoke_test|run_measurement|run_show_status)) begin
      $display("ERROR: nothing to do");
      $finish;
    end
