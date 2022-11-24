@@ -46,7 +46,7 @@ end
 
 wire clk;
 
-`design COCOTB_SIM
+`ifdef COCOTB_SIM
 assign clk = dclk;
 `else
 assign clk = rclk;
