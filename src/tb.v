@@ -13,7 +13,7 @@ parameter run_smoke_test = 0;
 parameter run_measurement = 0;
 parameter run_show_status = 1;
 
-reg clk,rpass;
+reg rclk,rpass;
 
 assign pass = rpass;
 
@@ -40,9 +40,17 @@ ericsmi_speed_test speed_test(
 //end
 
 initial begin
-  clk = 1 ; #(period/2) clk = 0 ;
-  forever #(period/2) clk = ~clk ;
+  rclk = 1 ; #(period/2) rclk = 0 ;
+  forever #(period/2) rclk = ~rclk ;
 end
+
+wire clk;
+
+`design COCOTB_SIM
+assign clk = dclk;
+`else
+assign clk = rclk;
+`endif
 
 initial begin
    rpass = 0;
@@ -201,7 +209,7 @@ initial begin
 
    $display("ALL TESTS PASS");
    rpass = 1;
-   $finish;
+   //$finish;
 end
 
 endmodule
