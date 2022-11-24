@@ -202,10 +202,10 @@ assign status[7:0] = {1'b1,
                       value1[17], // 17=Ceiling@Log2[250*166]+1
                       value0[17]};
 
-assign io_out[7:0] = sel[2:0] == 3'b000 ? {value0[7:0]} :
-                     sel[2:0] == 3'b001 ? {value0[15:8]} :
-                     sel[2:0] == 3'b010 ? {value0[23:16]} :
-                     sel[2:0] == 3'b011 ? 8'd0:
+assign io_out[7:0] = sel[2:0] == 3'b000 ? 8'd0 : 
+                     sel[2:0] == 3'b001 ? {value0[7:0]} :
+                     sel[2:0] == 3'b010 ? {value0[15:8]} :
+                     sel[2:0] == 3'b011 ? {value0[23:16]} : 
                      sel[2:0] == 3'b100 ? {value1[7:0]} :
                      sel[2:0] == 3'b101 ? {value1[15:8]} :
                      sel[2:0] == 3'b110 ? {value1[23:16]} :

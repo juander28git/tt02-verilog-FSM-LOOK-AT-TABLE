@@ -1,19 +1,19 @@
 `timescale 1ns/100ps
-
 module tb (
     // testbench is controlled by test.py
-    input clk,
+    input dclk,
     output pass 
    );
 
+//parameter period = 166*1000;
+parameter period = 1000;
 
-parameter period = 166*1000;
-
-parameter run_smoke_test = 1;
+parameter record_vcd = 0;
+parameter run_smoke_test = 0;
 parameter run_measurement = 0;
-parameter run_show_status = 0;
+parameter run_show_status = 1;
 
-reg rpass;
+reg clk,rpass;
 
 assign pass = rpass;
 
@@ -39,17 +39,17 @@ ericsmi_speed_test speed_test(
 //  $finish;
 //end
 
-//initial begin
-//  clk = 1 ; #(period/2) clk = 0 ;
-//  forever #(period/2) clk = ~clk ;
-//end
+initial begin
+  clk = 1 ; #(period/2) clk = 0 ;
+  forever #(period/2) clk = ~clk ;
+end
 
 initial begin
    rpass = 0;
 
    //$sdf_annotate("speed_test.sdf",speed_test, , , "maximum");
 
-   if ( period <= 1000 ) begin
+   if ( 1'b1 == record_vcd ) begin
      $dumpfile("tb.vcd");
      $dumpvars(0);
    end
@@ -62,7 +62,7 @@ initial begin
    // wrapper initializes all inputs to 0
    nrst = 0;
    trig = 0;
-   sel[2:0] = 0;
+   sel[2:0] = 3'b000;
    ring_en[1:0] = 2'b00;
 
    if (1 == run_smoke_test) begin
@@ -78,20 +78,23 @@ initial begin
          $finish;
       end
       $display("PASS: smoke_test");
-      $finish;
    end
 
    if (1 == run_measurement) begin
     @(negedge clk);
     nrst = 1;
-    sel[2:0] = 3'b111;
+    sel[2:0] = 3'b000;
     ring_en[1:0] = 2'b11;
     @(negedge clk);
-    if ( out[6] != 1'b0 ) begin
-       $diplay("ERROR: fired bit not clear");
+    if ( out[7] != 1'b0 ) begin
+       $display("ERROR: smoke_test: out[7] is not clear");
        $finish;
     end
-    $display("$time: fire measurement");
+    if ( out[6] != 1'b0 ) begin
+       $display("ERROR: fired bit not clear");
+       $finish;
+    end
+    $display("%d: fire measurement",$time);
     trig = 1; 
     @(posedge clk);
     @(posedge clk);
@@ -100,29 +103,32 @@ initial begin
     @(posedge clk);
     @(posedge clk); // let measurement finish
 
-    if ( out[6] != 1'b1 ) begin
-       $diplay("ERROR: measurement didnt fire");
-       $finish;
-    end
-    $display("$time: measurement done");
-
     // speed up simulation by turning off the ring, also nice to reduce noise in the IC
     ring_en[1:0] = 2'b00;
+
+    sel[2:0] = 3'b111;
+
+    @(negedge clk); 
+    if ( out[6] != 1'b1 ) begin
+       $display("ERROR: measurement didnt fire");
+       $finish;
+    end
+    $display("%d: measurement done",$time);
     
     // read out meusurement result
 
     @(posedge clk);
-    sel[2:0] = 3'b000;
+    sel[2:0] = 3'b001;
     @(negedge clk);
     count0[7:0] = out[7:0];
 
     @(posedge clk);
-    sel[2:0] = 3'b001;
+    sel[2:0] = 3'b010;
     @(negedge clk);
     count0[15:8] = out[7:0];
 
     @(posedge clk);
-    sel[2:0] = 3'b010;
+    sel[2:0] = 3'b011;
     @(negedge clk);
     count0[23:16] = out[7:0];
 
@@ -169,6 +175,7 @@ initial begin
             $display("ERROR: count1 overflowed");
             $finish;
     end 
+    $display("%d PASS: run measurement",$time);
 
    end // run_measurement
 
@@ -184,17 +191,17 @@ initial begin
          $display("ERROR: smoke_test: out[7] is not set");
          $finish;
     end
-    $display("$time: wait for fast clock posedge");
-    @(posedge out[0]);
-    $display("$time: received");
+    @(posedge clk);
+    @(posedge clk);
     ring_en[1:0] = 2'b00;
 
     @(posedge clk); 
+    $display("PASS: show status");
    end
 
-   $display("TEST PASS");
+   $display("ALL TESTS PASS");
    rpass = 1;
-
+   $finish;
 end
 
 endmodule
