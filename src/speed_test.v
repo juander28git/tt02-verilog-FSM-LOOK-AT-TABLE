@@ -58,18 +58,13 @@ endmodule
 module ring_osc(input nrst,output osc);
   // We count for 1 scan_clk period which expected at 166uS (6KHz).
   // If the delay of one inverter is 20ps and the ring is 100 inverters long,
-  // then the ring period is 4nS (2*100inv*20pS/inv)
-  // This is 250MHz so expect a count of 250*166 nominally. 
+  // then the ring period is 6nS (2*150inv*20pS/inv)
+  // This is 250MHz so expect a count of 166*166 nominally. 
   // For more time resolution make scan_clk slower but that requires more
   // counter depth. 
   // scan clk slowing can be done externally to the TT IC or with the clk div. 
 
-  // Sidenote: I actually wanted 150 but detailed routing complained.
-  //           There is a trade-off between ring period and counter depth
-  //           as they both compete for area. 
-
-  localparam NUM_INVERTERS = 100; //  must be an even number
-
+  localparam NUM_INVERTERS = 150; //  must be an even number
   
   // setup loop of inverters
   // http://svn.clairexen.net/handicraft/2015/ringosc/ringosc.v
@@ -127,7 +122,7 @@ module ericsmi_speed_test(
 );
 
 parameter WIDTH=24;
-localparam COUNTER_WIDTH = 20; // TinyTapeout is small, so find a value that fits by trial and error
+localparam COUNTER_WIDTH = 23; // TinyTapeout is small, so find a value that fits by trial and error
 
 wire force_trig, fired, count_en;
 wire [2:0] sel;
@@ -197,10 +192,10 @@ assign status[7:0] = {1'b1,
                       fired, 
                       value1[COUNTER_WIDTH-1], // overflow
                       value0[COUNTER_WIDTH-1], // overflow
-                      value0[COUNTER_WIDTH-2],
                       value1[COUNTER_WIDTH-2],
-                      value1[17], // 17=Ceiling@Log2[250*166]+1
-                      value0[17]};
+                      value0[COUNTER_WIDTH-2],
+                      value1[16], // 16=Ceiling@Log2[166*166]+1
+                      value0[16]};
 
 assign io_out[7:0] = sel[2:0] == 3'b000 ? 8'd0 : 
                      sel[2:0] == 3'b001 ? {value0[7:0]} :

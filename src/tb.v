@@ -2,20 +2,18 @@
 module tb (
     // testbench is controlled by test.py
     input dclk,
-    output pass 
+    input [31:0] dclk_period,
+    input record_vcd,
+    input run_smoke_test,
+    input run_measurement,
+    input run_show_status,
+    output pass_flag 
    );
 
-//parameter period = 166*1000;
-parameter period = 1000;
-
-parameter record_vcd = 0;
-parameter run_smoke_test = 0;
-parameter run_measurement = 0;
-parameter run_show_status = 1;
-
 reg rclk,rpass;
+assign pass_flag = rpass;
 
-assign pass = rpass;
+int period = dclk_period;
 
 reg nrst,trig;
 reg [1:0] ring_en;
@@ -39,17 +37,19 @@ ericsmi_speed_test speed_test(
 //  $finish;
 //end
 
-initial begin
-  rclk = 1 ; #(period/2) rclk = 0 ;
-  forever #(period/2) rclk = ~rclk ;
-end
 
 wire clk;
 
 `ifdef COCOTB_SIM
-assign clk = dclk;
+  initial rclk=0;
+  assign clk = dclk;
 `else
-assign clk = rclk;
+  // not inside cocotb 
+  initial begin
+    rclk = 1 ; #(period/2) rclk = 0 ;
+    forever #(period/2) rclk = ~rclk ;
+  end
+  assign clk = rclk;
 `endif
 
 initial begin
@@ -209,7 +209,9 @@ initial begin
 
    $display("ALL TESTS PASS");
    rpass = 1;
-   //$finish;
+   `ifndef COCOTB_SIM 
+     $finish;
+   `endif
 end
 
 endmodule
