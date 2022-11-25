@@ -11,20 +11,23 @@ async def run_smoke_test(dut):
 
     dut.dclk_period.value = int(period)
 
+    dut.go.value = 0
+
     dut.record_vcd.value = 0
     dut.run_smoke_test.value = 0
     dut.run_measurement.value = 0
     dut.run_show_status.value = 1
 
     clock = Clock(dut.dclk, period, units=units)
-
     cocotb.start_soon(clock.start())
+
+    dut.go.value = 1
     await ClockCycles(dut.dclk, 1)
 
-    dut._log.info("pass {}".format(dut.pass_flag))
-    assert dut.pass_flag == 0
+    dut._log.info("pass {}".format(dut.pass_flag.value))
+    assert 0 == dut.pass_flag.value
 
     await ClockCycles(dut.dclk, 10)
 
-    dut._log.info("pass {}".format(dut.pass_flag))
-    assert dut.pass_flag == 1
+    dut._log.info("pass {}".format(dut.pass_flag.value))
+    assert 1 == dut.pass_flag.value

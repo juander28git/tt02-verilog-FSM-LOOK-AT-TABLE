@@ -2,6 +2,7 @@
 module tb (
     // testbench is controlled by test.py
     input dclk,
+    input go,
     input [31:0] dclk_period,
     input record_vcd,
     input run_smoke_test,
@@ -13,7 +14,8 @@ module tb (
 reg rclk,rpass;
 assign pass_flag = rpass;
 
-int period = dclk_period;
+int period;
+initial period = dclk_period;
 
 reg nrst,trig;
 reg [1:0] ring_en;
@@ -66,6 +68,8 @@ initial begin
      $display("ERROR: nothing to do");
      $finish;
    end
+
+   @(posedge go);
 
    // wrapper initializes all inputs to 0
    nrst = 0;
