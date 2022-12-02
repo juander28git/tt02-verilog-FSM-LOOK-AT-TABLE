@@ -23,7 +23,7 @@ documentation:
   language:     "verilog" # other examples include Verilog, Amaranth, VHDL, etc
   doc_link:     ""      # URL to longer form documentation, eg the README.md in your repository
   clock_hz:     6000       # Clock frequency in Hz (if required)
-  picture:      "pic/tt_tapeout_ringosc_measurement.png"      # relative path to a picture in your repository
+  picture:      "pic/tt_speed_test.pdf"      # relative path to a picture in your repository
   inputs:               # a description of what the inputs do
     - clock
     - nreset
