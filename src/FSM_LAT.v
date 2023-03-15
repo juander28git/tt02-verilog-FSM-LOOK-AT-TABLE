@@ -25,14 +25,14 @@ module FSM_LAT(
 					 input [4:0]in,
 					 input REG_STATE,
 					 output clk_out,
-					 output out
+					 output [4:0]out
 					 );
 					 
 					 wire clk,ok;
 					 wire [4:0]state1,state2,state3,state4,state5;
 					 wire [1:0]sel_clk;
 					 wire [26:0] reg_in_par;
-	assign clk_out =clk;
+				assign clk_out =clk;
 				clk_sel clk_sel(
 									.clk1(clk_in), 
 									.clk2(0),
