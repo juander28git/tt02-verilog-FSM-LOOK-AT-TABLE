@@ -8,7 +8,7 @@ project:
     - clk_sel.v
     - SIPO.v
     - dff_5.v
-    - dff.v
+    - d_ff.v
   top_module:  "FSM_LAT"      # put the name of your top module here, make it unique by prepending your github username
 
 # As everyone will have access to all designs, try to make it easy for someone new to your design to know what
