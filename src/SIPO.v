@@ -24,6 +24,7 @@ module SIPO
 		input in,en,
 		output [26:0]out,
 		output [1:0]clk_sel,
+		output out_sel,
 		output [4:0]out1,
 		output [4:0]out2,
 		output [4:0]out3,
@@ -32,17 +33,26 @@ module SIPO
 		output finished
 	);
 		wire [4:0]q0,q1,q2,q3,q4;
-		wire ok,AA,BB;
+		wire ok,AA,BB,CC;
 		
 	   assign finished = ok; 
 		assign clk = (!ok) & clock;
-		assign out1 = q0;
-		assign out2 = q1;
-		assign out3 = q2;
-		assign out4 = q3;
-		assign out5 = q4;
+		assign out1 = q0 & ok;
+		assign out2 = q1 & ok;
+		assign out3 = q2 & ok;
+		assign out4 = q3 & ok;
+		assign out5 = q4 & ok;
 		assign out  = {q4,q3,q2,q1,q0};
-		assign clk_sel = {AA,BB};
+		assign clk_sel = {AA&ok,BB&ok};
+		assign out_sel = CC&ok;
+		
+		d_ff Uout(
+		.clk(clk),
+		.reset(rst),
+		.en(en),
+		.d(in),
+		.q(CC)
+		);
 		
 		d_ff UA(
 		.clk(clk),

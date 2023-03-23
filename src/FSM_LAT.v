@@ -25,14 +25,20 @@ module FSM_LAT(
 					 input [4:0]in,
 					 input REG_STATE,
 					 output clk_out,
-					 output [4:0]out
+					 output [4:0]out,
+					 output [2:0]out11
+					 
 					 );
 					 
-					 wire clk,ok;
-					 wire [4:0]state1,state2,state3,state4,state5;
+					 wire clk,ok,sel_out,compp,rst_timer;
+					 wire [4:0]state1,state2,state3,state4,state5,out_c;
 					 wire [1:0]sel_clk;
 					 wire [26:0] reg_in_par;
-				assign clk_out =clk;
+					 wire [19:0] sig_comp, save;
+					 
+
+	assign out11={compp,clk,1'b0};
+	assign clk_out =clk;
 				clk_sel clk_sel(
 									.clk1(clk_in), 
 									.clk2(0),
@@ -48,6 +54,7 @@ module FSM_LAT(
 							.en(1),
 							.out(reg_in_par),
 							.clk_sel(sel_clk),
+							.out_sel(sel_out),
 							.out1(state1),
 							.out2(state2),
 							.out3(state3),
@@ -68,10 +75,44 @@ module FSM_LAT(
 					 .jump3(state3),
 					 .jump4(state4),
 					 .jump5(state5),
-					 .out(out)
+					 .out(out_c)
 					 );
+					 
+					 
+			chaout changa_out(
+									.in(out_c),
+									.sel(sel_out),
+									.out(out));
+	 d_ff retardo(
+					.clk(clk),
+					.reset(reset),
+					.en(1'b1),
+					.d(out_c[3]),
+					.q(rst_timer)
+	);
+									
+									
+			counter Timer(
+					.clk(clk),
+					.reset(reset | rst_timer),
+					.en(out_c[4]),
+					.count(sig_comp),
+					.max()
+					);
 			
+			registro20bits register_timer (
+								.clk(clk),
+								.reset(reset),
+								.data_in(sig_comp), 
+								.enable(out_c[3]),
+								.data_out(save)
+								);
 			
+			Comparador comparaaaa(
+							.A(sig_comp),
+							.B(save),
+							.out(compp)
+							);
 	
 					 
 endmodule
