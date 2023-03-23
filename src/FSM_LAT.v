@@ -19,15 +19,11 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-module FSM_LAT(
-					 input clk_in,
+f					 input clk_in,
 					 input reset,
 					 input [4:0]in,
 					 input REG_STATE,
-					 output clk_out,
-					 output [4:0]out,
-					 output [2:0]out11
-					 
+					 output [7:0]out				 
 					 );
 					 
 					 wire clk,ok,sel_out,compp,rst_timer;
@@ -37,8 +33,7 @@ module FSM_LAT(
 					 wire [19:0] sig_comp, save;
 					 
 
-	assign out11={compp,clk,1'b0};
-	assign clk_out =clk;
+	assign out[7:5]={compp,clk,1'b0};
 				clk_sel clk_sel(
 									.clk1(clk_in), 
 									.clk2(0),
@@ -82,7 +77,7 @@ module FSM_LAT(
 			chaout changa_out(
 									.in(out_c),
 									.sel(sel_out),
-									.out(out));
+									.out(out[4:0]));
 	 d_ff retardo(
 					.clk(clk),
 					.reset(reset),
