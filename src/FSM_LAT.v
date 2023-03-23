@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-f					 input clk_in,
+					 input clk_in,
 					 input reset,
 					 input [4:0]in,
 					 input REG_STATE,
