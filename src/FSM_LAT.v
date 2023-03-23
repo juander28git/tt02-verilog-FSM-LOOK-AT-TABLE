@@ -109,7 +109,7 @@ module FSM_LAT(
 							.out(compp)
 							);
 	
-	  ring_osc clockring(
+	  ring_osc clockkkk(
 		  .nrst(1'b1),
 		  .osc(clock_not_ring)
 	  			);
