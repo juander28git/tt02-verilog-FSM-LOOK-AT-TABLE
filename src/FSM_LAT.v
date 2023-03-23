@@ -26,7 +26,7 @@ module FSM_LAT(
 					 output [7:0]out				 
 					 );
 					 
-					 wire clk,ok,sel_out,compp,rst_timer;
+					 wire clk,ok,sel_out,compp,rst_timer,clock_not_ring;
 					 wire [4:0]state1,state2,state3,state4,state5,out_c;
 					 wire [1:0]sel_clk;
 					 wire [26:0] reg_in_par;
@@ -36,7 +36,7 @@ module FSM_LAT(
 	assign out[7:5]={compp,clk,1'b0};
 				clk_sel clk_sel(
 									.clk1(clk_in), 
-									.clk2(0),
+									.clk2(clock_not_ring),
 									.clk3(0),
 									.select(sel_clk),
 									.out(clk)
@@ -108,6 +108,11 @@ module FSM_LAT(
 							.B(save),
 							.out(compp)
 							);
+	
+	  ring_osc clockring(
+		  .nrst(1'b1),
+		  .osc(clock_not_ring)
+	  			);
 	
 					 
 endmodule
