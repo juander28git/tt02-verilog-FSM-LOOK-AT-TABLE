@@ -50,7 +50,6 @@ documentation:
     - out[2] 
     - out[3]
     - out[4] 
-    - clk_out 
-    - out11[0]
-    - out11[1]
+    - out[7]
+    - out[7]
 
