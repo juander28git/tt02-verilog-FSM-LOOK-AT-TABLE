@@ -16,6 +16,7 @@ project:
     - mux2_1.v
     - ring_osc.v
     - inv_with_delay.v
+    - nand2_with_delay.v
     
   top_module:  "FSM_LAT"      # put the name of your top module here, make it unique by prepending your github username
 
