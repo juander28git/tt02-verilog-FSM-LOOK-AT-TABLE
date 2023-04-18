@@ -52,11 +52,16 @@ assign out[5] =clk;
 							
 				clk_sel clock_selector(
 												.clk1(clk_in),
-												.clk2(clk_in),
+												.clk2(clk_ring),
 												.select(sel_clk),
 												.out(clk));
 					
 					
+				ring_osc rinf(
+					.nrst(1),
+					.osc(clk_ring)
+	
+				);
 				 FSM State_machine(
 					 .clk(clk),
 					 .reset(reset),
@@ -74,7 +79,7 @@ assign out[5] =clk;
 		 
 			chaout changa_out(
 									.in(out),
-									.sel(1),
+									.sel(sel_out),
 									.out_in(outt[7:5]),
 									.out(outt[4:0])
 									);
