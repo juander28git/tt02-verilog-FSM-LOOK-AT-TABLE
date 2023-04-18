@@ -8,7 +8,13 @@ project:
     - clk_sel.v
     - SIPO.v
     - dff_5.v
+    - clk_div.v
+    - desition.v
     - d_ff.v
+    - jk_ff.v
+    - PISO.v
+    - piso_1_bit.v
+    - PISO_DIV.v
     - chaout.v
     - Comparador.v
     - counter.v
@@ -48,11 +54,12 @@ documentation:
     - in[4]
     - REG_STATE
   outputs:
-    - out[0] 
-    - out[1]
-    - out[2] 
-    - out[3]
-    - out[4] 
-    - out[7]
-    - out[7]
+    - outt[0] 
+    - outt[1]
+    - outt[2] 
+    - outt[3]
+    - outt[4] 
+    - outt[5]
+    - outt[6]
+    - outt[7]
 
