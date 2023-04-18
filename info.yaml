@@ -8,7 +8,7 @@ project:
     - clk_sel.v
     - SIPO.v
     - dff_5.v
-    - clk_div.v
+    - clock_div.v
     - desition.v
     - d_ff.v
     - jk_ff.v
