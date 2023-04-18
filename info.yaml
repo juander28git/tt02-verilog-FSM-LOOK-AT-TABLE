@@ -14,7 +14,7 @@ project:
     - jk_ff.v
     - PISO.v
     - piso_1_bit.v
-    - PISO_DIV.v
+    - PISO_div.v
     - chaout.v
     - Comparador.v
     - counter.v
