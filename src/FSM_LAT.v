@@ -91,7 +91,7 @@ assign out[5] =clk;
 			.register(out[3]),
 			.comp(out[6]));
 				
-				
+			/*	
 		   PISO_div PISO(
 			.clk(clk),
 			.rst(reset),
@@ -99,7 +99,7 @@ assign out[5] =clk;
 			.shift_in(0),
 			.out(out[7])
 			);
-
+*/
 					 
 endmodule
 
